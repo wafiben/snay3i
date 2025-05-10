@@ -1,13 +1,10 @@
 import { Controller, Post, Body } from '@nestjs/common';
+import { routesV1 } from '@modules/categories/categorie.routes';
 
-@Controller('categories')
+@Controller(routesV1.categorie.createCategorie)
 export class CategorieHttpController {
   @Post()
   create(@Body() createCategoryDto: any) {
-    console.log('ssssssssssss');
-    return {
-      message: 'Category created successfully',
-      data: createCategoryDto,
-    };
+    console.log('create categorie ...');
   }
 }
