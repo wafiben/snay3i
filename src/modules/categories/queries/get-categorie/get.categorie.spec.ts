@@ -2,8 +2,15 @@ import { CategorieBuilder } from "../../../../test-utils/categorie-builder";
 import { CategorieInMemory } from "../../database/categorie-in-memory";
 import { GetOneCategorieHandler } from "./get-categorie.handler";
 import { CategorieNotFoundError } from "../../domain/errors/categorie-not-found.error";
+import { beforeEach } from "node:test";
 
 describe('GetOneCategorieHandler', () => {
+  let error : CategorieNotFoundError ;
+   beforeEach(()=>{
+    error = new CategorieNotFoundError()
+   })
+
+
   it('should return a categorie by ID', async () => {
     const repository = new CategorieInMemory();
     const categorie = new CategorieBuilder()
@@ -33,10 +40,12 @@ describe('GetOneCategorieHandler', () => {
     .withDescription('PLUMBER')
     .build();
 
+    const nonExistentId = '333';
+
     repository.addCategorie(categorie);
 
-    const handler = new GetOneCategorieHandler(repository);
-    expect(true).toBe(true)
-    /* await expect(handler.handle('321')).toBe("CATEGORIE_NOT_FOUND"); */
+    await expect(repository.getCategorieById(nonExistentId))
+      .rejects
+      .toThrow(CategorieNotFoundError);
   });
 });
