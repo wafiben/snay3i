@@ -1,9 +1,9 @@
 import { CategorieEntity } from "../modules/categories/domain/Categorie";
 
 export class CategorieBuilder {
-  private id :string ;
-  private name :string ;
-  private description :string ;
+  private id: string;
+  private name: string;
+  private description: string;
 
   withId(id: string): this {
     this.id = id;
