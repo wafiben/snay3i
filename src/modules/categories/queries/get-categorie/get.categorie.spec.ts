@@ -1,14 +1,15 @@
-import { CategorieBuilder } from "../../../../test-utils/categorie-builder";
-import { CategorieInMemory } from "../../database/categorie-in-memory";
-import { GetOneCategorieHandler } from "./get-categorie.handler";
-import { CategorieNotFoundError } from "../../domain/errors/categorie-not-found.error";
-import { beforeEach } from "node:test";
+import { CategorieBuilder } from '../../../../test-utils/categorie-builder';
+import { CategorieInMemory } from '../../database/categorie-in-memory';
+import { GetOneCategorieHandler } from './get-categorie.handler';
+import { CategorieNotFoundError } from '../../domain/errors/categorie-not-found.error';
+import { beforeEach } from 'node:test';
 
 describe('GetOneCategorieHandler', () => {
   let error : CategorieNotFoundError ;
    beforeEach(()=>{
     error = new CategorieNotFoundError()
    })
+
 
 
   it('should return a categorie by ID', async () => {
@@ -44,8 +45,8 @@ describe('GetOneCategorieHandler', () => {
 
     repository.addCategorie(categorie);
 
-    await expect(repository.getCategorieById(nonExistentId))
-      .rejects
-      .toThrow(CategorieNotFoundError);
+    await expect(repository.getCategorieById(nonExistentId)).rejects.toThrow(
+      CategorieNotFoundError,
+    );
   });
 });
