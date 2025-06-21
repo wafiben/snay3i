@@ -4,12 +4,11 @@ import { GetOneCategorieHandler } from './get-categorie.handler';
 import { CategorieNotFoundError } from '../../domain/errors/categorie-not-found.error';
 import { beforeEach } from 'node:test';
 
-describe('GetOneCategorieHandler', () => {
-  let error : CategorieNotFoundError ;
-   beforeEach(()=>{
+describe('Get one categorie Handler', () => {
+  let error: CategorieNotFoundError;
+  beforeEach(() => {
     error = new CategorieNotFoundError()
-   })
-
+  })
 
 
   it('should return a categorie by ID', async () => {
@@ -36,10 +35,10 @@ describe('GetOneCategorieHandler', () => {
   it('should throw an error if categorie does not exist', async () => {
     const repository = new CategorieInMemory();
     const categorie = new CategorieBuilder()
-    .withId('123')
-    .withName('PLUMBER')
-    .withDescription('PLUMBER')
-    .build();
+      .withId('123')
+      .withName('PLUMBER')
+      .withDescription('PLUMBER')
+      .build();
 
     const nonExistentId = '333';
 
