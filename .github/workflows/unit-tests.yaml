@@ -35,4 +35,4 @@ jobs:
       run: |
         pytest tests/ --verbose  # Added verbose flag for more detailed output
       env:
-        PYTHONPATH: ${{ github.workspace }}  # Removed asterisk
+        PYTHONPATH: ${{ github.workspace }}
