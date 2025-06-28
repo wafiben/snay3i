@@ -4,7 +4,7 @@ export enum BookingStatus {
   DECLINED = 'DECLINED',
 }
 
-class BookingRequest {
+export class BookingRequest {
   id: string;
   clientId: string;
   freelancerId: string;

@@ -1,6 +1,7 @@
-import { UserInMemory } from "@modules/users/database/user-in-memory";
-import { Role } from "@modules/users/domain/User";
-import { UserBuilder } from "src/test-utils/user-builder";
+import { BookingInMemory } from '../../../booking/database/book-in-memory';
+import { UserInMemory } from '../../../users/database/user-in-memory';
+import { Role } from '../../../users/domain/User';
+import { UserBuilder } from '../../../../test-utils/user-builder';
 
 describe('Booking Request', () => {
   let userRepository: UserInMemory;
@@ -11,12 +12,18 @@ describe('Booking Request', () => {
     bookingRepository = new BookingInMemory();
   });
 
-/*   it('should allow a client to create a booking request for a service', async () => {
-    const client = new UserBuilder().withId('client1').withRole(Role.CLIENT).build();
+  it('should allow a client to create a booking request for a service', async () => {
+    const client = new UserBuilder()
+      .withId('client1')
+      .withRole(Role.CLIENT)
+      .build();
+      
     const freelancer = new UserBuilder()
       .withId('freelancer1')
       .withRole(Role.FREELANCER)
-      .withServices([{ name: 'Painting', laborPrice: 100, estimatedMaterialCost: 40 }])
+      .withServices([
+        { name: 'Painting', laborPrice: 100, estimatedMaterialCost: 40 },
+      ])
       .build();
 
     await userRepository.addUser(client);
@@ -33,6 +40,5 @@ describe('Booking Request', () => {
     expect(request.freelancerId).toBe(freelancer.id);
     expect(request.serviceName).toBe('Painting');
     expect(request.status).toBe('PENDING');
-  }); */
-
+  });
 });

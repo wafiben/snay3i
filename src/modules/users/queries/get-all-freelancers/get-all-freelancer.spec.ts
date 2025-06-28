@@ -73,7 +73,7 @@ describe('Get users', () => {
       UserAuthorization,
     );
   });
-  
+
   it('should filter freelancers based on rating and category', async () => {
     const userRepository = new UserInMemory();
 

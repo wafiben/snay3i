@@ -1,4 +1,7 @@
-class BookingInMemory {
+import { BookingRequest } from '../domain/booking-request';
+import { BookingStatus } from '../domain/booking-request';
+
+export class BookingInMemory {
   private bookings: BookingRequest[] = [];
 
   async createBooking(data: {
@@ -9,7 +12,7 @@ class BookingInMemory {
   }): Promise<BookingRequest> {
     const booking: BookingRequest = {
       id: Date.now().toString(),
-      status: 'PENDING',
+      status: BookingStatus.PENDING,
       ...data,
     };
     this.bookings.push(booking);

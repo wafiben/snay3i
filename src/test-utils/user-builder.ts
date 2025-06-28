@@ -1,4 +1,4 @@
-import { UserEntity, Role, Service, AvailabilitySlot, PortfolioItem, Certificate, Review } from '../modules/users/domain/User';
+import { UserModel, Role, Service, AvailabilitySlot, PortfolioItem, Certificate, Review } from '../modules/users/domain/User';
 
 export class UserBuilder {
   private id: string;
@@ -99,8 +99,8 @@ export class UserBuilder {
     return this;
   }
 
-  build(): UserEntity {
-    const user = new UserEntity(
+  build(): UserModel {
+    const user = new UserModel(
       this.id,
       this.name,
       this.email,

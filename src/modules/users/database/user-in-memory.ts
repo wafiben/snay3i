@@ -1,6 +1,6 @@
 import { UserAuthorization } from '../domain/errors/user-authorization.error';
 import { UserNotFoundError } from '../domain/errors/user-not-found.error';
-import { Role, UserEntity } from '../domain/User';
+import { Role, UserModel } from '../domain/User';
 
 interface FreelancerFilter {
   keyword?: string;
@@ -11,13 +11,13 @@ interface FreelancerFilter {
 }
 
 export class UserInMemory {
-  private users: UserEntity[] = [];
+  private users: UserModel[] = [];
 
-  addUser(user: UserEntity): void {
+  addUser(user: UserModel): void {
     this.users.push(user);
   }
 
-  async getUserById(userId: string): Promise<UserEntity> {
+  async getUserById(userId: string): Promise<UserModel> {
     const found = this.users.find((cat) => cat.id === userId);
     if (!found) {
       throw new UserNotFoundError();
@@ -33,7 +33,7 @@ export class UserInMemory {
     return (await this.getUserById(userId)).role === Role.CLIENT;
   }
 
-  async getAllFreelancers(userId: string): Promise<UserEntity[]> {
+  async getAllFreelancers(userId: string): Promise<UserModel[]> {
     if (await this.isClient(userId)) {
       return this.users.filter((user) => user.role === Role.FREELANCER);
     }
@@ -41,7 +41,7 @@ export class UserInMemory {
     throw new UserAuthorization();
   }
 
-  async filterFreelancers (filters: FreelancerFilter): Promise<UserEntity[]> {
+  async filterFreelancers (filters: FreelancerFilter): Promise<UserModel[]> {
     return this.users.filter((user) => {
       if (user.role !== Role.FREELANCER) return false;
 

@@ -40,7 +40,7 @@ export interface Review {
   };
 }
 
-export class UserEntity {
+export class UserModel {
   id: string;
   name: string; 
   email: string;
