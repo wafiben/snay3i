@@ -8,9 +8,11 @@ import { GetUsersHandler } from './modules/users/queries/get-all-freelancers/get
 import { UserEntity } from './modules/users/database/user.entity';
 import { UserClientController } from './modules/users/commands/create-user-client.controller';
 import { AuthModule } from './modules/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     CqrsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
