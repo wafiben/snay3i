@@ -1,0 +1,5 @@
+{
+  "name": "client",
+  "email": "client@gmail.com",
+  "password": "000000"
+}
