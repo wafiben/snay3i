@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
-
 import { AppController } from './app.controller';
 import { UserController } from './modules/users/queries/get-all-freelancers/get-all-freelancer.controller';
 import { AppService } from './app.service';
 import { GetUsersHandler } from './modules/users/queries/get-all-freelancers/get-all-freelancer.handler';
-import { UserModel } from './modules/users/domain/User';
 import { UserEntity } from './modules/users/database/user.entity';
+import { UserClientController } from './modules/users/commands/create-user-client.controller';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,15 +16,16 @@ import { UserEntity } from './modules/users/database/user.entity';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'your_username',
-      password: 'your_password',
-      database: 'your_db',
-      entities: [UserModel],
+      username: 'snei3i',
+      password: 'snei3i',
+      database: 'snei3i',
+      entities: [UserEntity],
       synchronize: true,
     }),
+    AuthModule,
     TypeOrmModule.forFeature([UserEntity]),
   ],
-  controllers: [AppController, UserController],
+  controllers: [AppController, UserController, UserClientController],
   providers: [AppService, GetUsersHandler],
 })
 export class AppModule {}

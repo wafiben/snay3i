@@ -4,7 +4,7 @@ import { AvailabilitySlot, Certificate, PortfolioItem, Review, Service } from '.
 
 @Entity('users')
 export class UserEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
