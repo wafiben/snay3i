@@ -54,7 +54,7 @@ export class UserModel {
   services?: Service[];
   availability?: AvailabilitySlot[];
   portfolio?: PortfolioItem[];
-  insuranceStatus?: string; // e.g., "Insured for up to 10,000 TND"
+  insuranceStatus?: string;
   certificates?: Certificate[];
   reviews?: Review[];
   languagesSpoken?: string[];

@@ -3,3 +3,49 @@
   "email": "client@gmail.com",
   "password": "000000"
 }
+
+
+[
+  {
+    "email": "john.doe@example.com",
+    "password": "000000",
+    "name": "John Doe",
+    "role": "FREELANCER",
+    "services": [
+      {
+        "name": "Toilet Repair",
+        "laborPrice": 80,
+        "estimatedMaterialCost": 25,
+        "notes": "Material cost may vary depending on pipe size"
+      }
+    ]
+  },
+  {
+    "email": "sarah.smith@example.com",
+    "password": "000000",
+    "name": "Sarah Smith",
+    "role": "FREELANCER",
+    "services": [
+      {
+        "name": "Electrical Wiring",
+        "laborPrice": 120,
+        "estimatedMaterialCost": 50,
+        "notes": "Wiring length may increase material cost"
+      }
+    ]
+  },
+  {
+    "email": "ali.ahmed@example.com",
+    "password": "000000",
+    "name": "Ali Ahmed",
+    "role": "FREELANCER",
+    "services": [
+      {
+        "name": "Painting Walls",
+        "laborPrice": 100,
+        "estimatedMaterialCost": 60,
+        "notes": "Material cost may vary by paint quality"
+      }
+    ]
+  }
+]

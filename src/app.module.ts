@@ -9,6 +9,7 @@ import { UserEntity } from './modules/users/database/user.entity';
 import { UserClientController } from './modules/users/commands/create-user-client.controller';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { CreateUserFreelancerController } from './modules/users/commands/create-user-freelancer.controller';
 
 @Module({
   imports: [
@@ -27,7 +28,12 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     TypeOrmModule.forFeature([UserEntity]),
   ],
-  controllers: [AppController, UserController, UserClientController],
+  controllers: [
+    AppController,
+    UserController,
+    UserClientController,
+    CreateUserFreelancerController,
+  ],
   providers: [AppService, GetUsersHandler],
 })
 export class AppModule {}
