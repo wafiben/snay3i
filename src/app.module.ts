@@ -10,6 +10,8 @@ import { UserClientController } from './modules/users/commands/create-user-clien
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { CreateUserFreelancerController } from './modules/users/commands/create-user-freelancer.controller';
+import { GetUserControllerById } from './modules/users/queries/get-single-frealancer/get-single-freelancer.controller';
+import { GetUserByIdHandler } from './modules/users/queries/get-single-frealancer/get-single-freelancer.handler';
 
 @Module({
   imports: [
@@ -33,7 +35,8 @@ import { CreateUserFreelancerController } from './modules/users/commands/create-
     UserController,
     UserClientController,
     CreateUserFreelancerController,
+    GetUserControllerById,
   ],
-  providers: [AppService, GetUsersHandler],
+  providers: [AppService, GetUsersHandler, GetUserByIdHandler],
 })
 export class AppModule {}
