@@ -4,17 +4,20 @@ import { GetUsersQuery } from './get-all-freelancer.controller';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../../database/user.entity';
+import { Role } from '../../domain/User';
 
 @Injectable()
 @QueryHandler(GetUsersQuery)
 export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
-constructor(
-  @InjectRepository(UserEntity)
-  private readonly userRepo: Repository<UserEntity>,
-) {}
-  async execute(query: GetUsersQuery): Promise <UserEntity[]> {
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepo: Repository<UserEntity>,
+  ) {}
+  async execute(query: GetUsersQuery): Promise<UserEntity[]> {
     const { minRating, maxPrice, category, proximity } = query.filters;
-    let qb = this.userRepo.createQueryBuilder('user');
+    let qb = this.userRepo
+      .createQueryBuilder('user')
+      .where('user.role = :role', { role: Role.FREELANCER });
 
     if (minRating !== undefined) {
       qb = qb.andWhere('user.rating >= :minRating', { minRating });

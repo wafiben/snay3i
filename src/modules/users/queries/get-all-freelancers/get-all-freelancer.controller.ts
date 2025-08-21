@@ -14,7 +14,7 @@ export class GetUsersQuery {
   constructor(public readonly filters: FreelancerFilter) {}
 }
 
-@Controller('users')
+@Controller('user-freelance')
 export class UserController {
   constructor(private readonly queryBus: QueryBus) {}
 
