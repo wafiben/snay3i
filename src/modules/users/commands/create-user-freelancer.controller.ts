@@ -21,7 +21,7 @@ export class CreateUserFreelancerController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() dto): Promise<void> {
+  async create(@Body() dto): Promise<string> {
     const { name, email, password, services } = dto;
     const existing = await this.userRepository.findOne({ where: { email } });
     if (existing) {
@@ -35,9 +35,10 @@ export class CreateUserFreelancerController {
       email,
       password: hashedPassword,
       role: Role.FREELANCER,
-      services: services ?? []
+      services: services ?? [],
     });
 
-    await this.userRepository.save(user);
+    const res = await this.userRepository.save(user);
+    return res.id;
   }
 }
