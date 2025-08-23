@@ -1,10 +1,24 @@
-name: Node.js Unit Tests
+name: Node.js CI
 on:
   push:
   pull_request:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+     postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: snei3i
+          POSTGRES_PASSWORD: snei3i
+          POSTGRES_DB: snei3i
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U snei3i"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js 20.19.3
@@ -16,3 +30,11 @@ jobs:
       run: npm ci
     - name: Run Unit Tests
       run: npm run test
+    - name: Run e2e tests
+      env:
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USERNAME: snei3i
+          DB_PASSWORD: snei3i
+          DB_NAME: snei3i
+      run: npm run test:e2e
