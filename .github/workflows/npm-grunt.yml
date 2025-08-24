@@ -38,3 +38,4 @@ jobs:
           DB_PASSWORD: snei3i
           DB_NAME: snei3i
       run: npm run test:e2e
+
