@@ -28,7 +28,7 @@ export class GetUserControllerById {
     );
 
     if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
+      throw new NotFoundException(`User with ID not found`);
     }
 
     return {

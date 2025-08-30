@@ -27,10 +27,7 @@ describe('get single with type Freelancer', () => {
   });
 
   afterEach(async () => {
-    if (id) {
-      await dataSource.getRepository(UserEntity).delete(id);
-      id = null;
-    }
+    await dataSource.getRepository(UserEntity).clear();
   });
 
   it('should save a single user freelancer', async () => {
@@ -59,5 +56,13 @@ describe('get single with type Freelancer', () => {
     expect(getRes.status).toBe(200);
     expect(getRes.body.name).toBe('Ali');
     expect(getRes.body.role).toBe('FREELANCER');
+  });
+
+  it('should throw an error when user not found', async () => {
+    const id = 3;
+    const getRes = await request(app.getHttpServer()).get(
+      `/user-freelance/single/${id}`,
+    );
+    expect(getRes.status).toBe(404);
   });
 });

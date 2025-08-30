@@ -98,3 +98,18 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+# Redis for development (port 6379)
+sudo docker run -d --name redis-dev -p 6379:6379 redis:latest
+
+# PostgreSQL for development (port 5432)
+sudo docker run -d --name postgres-dev -p 5432:5432 -e POSTGRES_DB=snei3i -e POSTGRES_USER=snei3i -e POSTGRES_PASSWORD=snei3i postgres:latest
+
+
+
+# Redis for testing (port 6380)
+sudo docker run -d --name redis-test -p 6380:6379 redis:latest
+
+# PostgreSQL for testing (port 5433)
+sudo docker run -d --name postgres-test -p 5433:5432 -e POSTGRES_DB=snei3i_test -e POSTGRES_USER=snei3i -e POSTGRES_PASSWORD=snei3i postgres:latest
