@@ -23,7 +23,6 @@ export class UserController {
     const users: UserModel[] = await this.queryBus.execute(
       new GetUsersQuery(filters),
     );
-    console.log(users.length)
     return users.map((user) => new UserDto(user));
   }
 }
