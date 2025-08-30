@@ -32,10 +32,11 @@ jobs:
       run: npm run test
     - name: Run e2e tests
       env:
+          NODE_ENV: test
+          CI: true 
           DB_HOST: localhost
           DB_PORT: 5432
           DB_USERNAME: snei3i
           DB_PASSWORD: snei3i
           DB_NAME: snei3i
       run: npm run test:e2e
-
