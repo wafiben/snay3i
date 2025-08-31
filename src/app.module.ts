@@ -1,75 +1,76 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
-import { AppController } from './app.controller';
-import { UserController } from './modules/users/queries/get-all-freelancers/get-all-freelancer.controller';
-import { AppService } from './app.service';
-import { GetUsersHandler } from './modules/users/queries/get-all-freelancers/get-all-freelancer.handler';
-import { UserEntity } from './modules/users/database/user.entity';
-import { UserClientController } from './modules/users/commands/create-user-client.controller';
-import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { CreateUserFreelancerController } from './modules/users/commands/create-user-freelancer.controller';
-import { GetUserControllerById } from './modules/users/queries/get-single-frealancer/get-single-freelancer.controller';
-import { GetUserByIdHandler } from './modules/users/queries/get-single-frealancer/get-single-freelancer.handler';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-ioredis-yet';
 
-// Environment detection
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+import { UserController } from './modules/users/queries/get-all-freelancers/get-all-freelancer.controller';
+import { GetUsersHandler } from './modules/users/queries/get-all-freelancers/get-all-freelancer.handler';
+import { UserEntity } from './modules/users/database/user.entity';
+import { UserClientController } from './modules/users/commands/create-user-client.controller';
+import { CreateUserFreelancerController } from './modules/users/commands/create-user-freelancer.controller';
+import { GetUserControllerById } from './modules/users/queries/get-single-frealancer/get-single-freelancer.controller';
+import { GetUserByIdHandler } from './modules/users/queries/get-single-frealancer/get-single-freelancer.handler';
+import { AuthModule } from './modules/auth/auth.module';
+
+// Detect environment
 const isTestEnvironment = process.env.NODE_ENV === 'test';
 const isCIEnvironment = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true';
 
 @Module({
   imports: [
-    // Always first: Config
+    // Config globally
     ConfigModule.forRoot({ isGlobal: true }),
-    
-    // Always provide cache - memory in CI/test, Redis in dev/prod
+
+    // Cache module with Redis or memory
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: async () => {
         if (isCIEnvironment || isTestEnvironment) {
-          // Use memory cache for CI and tests - no external dependencies
           return {
             store: 'memory',
-            ttl: 60 * 5, // 5 minutes
-            max: 100,    // limit memory usage
+            ttl: 300, // 5 minutes
+            max: 100,
           };
         }
-        
-        // Use Redis for local development and production
+
         return {
           store: await redisStore({
             socket: {
               host: 'localhost',
-              port: 6379,
+              port: 6380, // <-- updated to match your Docker Redis container
             },
-            ttl: 60 * 5,
+            ttl: 300,
           }),
         };
       },
     }),
-    
 
-    // CQRS and Database
+    // CQRS module
     CqrsModule,
+
+    // TypeORM Postgres connection
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
-      port: isCIEnvironment ? 5432 : (isTestEnvironment ? 5433 : 5432),
+      port: 5433,
       username: 'snei3i',
       password: 'snei3i',
-      database: isCIEnvironment ? 'snei3i' : (isTestEnvironment ? 'snei3i_test' : 'snei3i'),
-      entities: [UserEntity],
+      database: 'snei3i_test',
+      autoLoadEntities: true,
       synchronize: true,
-      dropSchema: isCIEnvironment || isTestEnvironment, // Always drop schema in CI/test for clean state
-      logging: false, // Reduce noise in tests
+      logging: false,
     }),
     TypeOrmModule.forFeature([UserEntity]),
 
     // Feature modules
     AuthModule,
   ],
+
   controllers: [
     AppController,
     UserController,
@@ -77,6 +78,7 @@ const isCIEnvironment = process.env.CI === 'true' || process.env.GITHUB_ACTIONS 
     CreateUserFreelancerController,
     GetUserControllerById,
   ],
+
   providers: [AppService, GetUsersHandler, GetUserByIdHandler],
 })
 export class AppModule {}
