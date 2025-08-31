@@ -12,17 +12,17 @@ describe('get single with type Freelancer', () => {
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule], // full app
+      imports: [AppModule],
     }).compile();
 
     app = moduleRef.createNestApplication();
     await app.init();
 
-    dataSource = app.get(DataSource); // get TypeORM DataSource
+    dataSource = app.get(DataSource);
   });
 
   afterAll(async () => {
-    await dataSource.destroy(); // close DB connection
+    await dataSource.destroy();
     await app.close();
   });
 
