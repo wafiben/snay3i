@@ -23,6 +23,7 @@ export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
     const cached = await this.cacheManager.get<UserEntity[]>(cacheKey);
 
     if (cached) {
+      console.log('here')
       return cached;
     }
 
