@@ -1,4 +1,11 @@
-import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UnauthorizedException,
+  Get,
+  Headers,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('user')
@@ -10,5 +17,10 @@ export class AuthController {
     const user = await this.authService.validateUser(body.email, body.password);
     if (!user) throw new UnauthorizedException();
     return this.authService.login(user);
+  }
+
+  @Get('profile')
+  async getProfile(@Headers('authorization') auth: string) {
+    return await this.authService.getProfile(auth);
   }
 }

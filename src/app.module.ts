@@ -4,10 +4,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-ioredis-yet';
-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 import { UserController } from './modules/users/queries/get-all-freelancers/get-all-freelancer.controller';
 import { GetUsersHandler } from './modules/users/queries/get-all-freelancers/get-all-freelancer.handler';
 import { UserEntity } from './modules/users/database/user.entity';
@@ -42,7 +40,7 @@ const isCIEnvironment = process.env.CI === 'true' || process.env.GITHUB_ACTIONS 
           store: await redisStore({
             socket: {
               host: 'localhost',
-              port: 6380, // <-- updated to match your Docker Redis container
+              port: 6379, // <-- updated to match your Docker Redis container
             },
             ttl: 300,
           }),
@@ -67,7 +65,6 @@ const isCIEnvironment = process.env.CI === 'true' || process.env.GITHUB_ACTIONS 
     }),
     TypeOrmModule.forFeature([UserEntity]),
 
-    // Feature modules
     AuthModule,
   ],
 

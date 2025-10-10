@@ -1,42 +1,70 @@
 name: Node.js CI
+
 on:
   push:
+    branches:
+      - 'feature/**'
   pull_request:
+    branches:
+      - 'feature/**'
+
 jobs:
   test:
     runs-on: ubuntu-latest
+
     services:
-     postgres:
+      postgres:
         image: postgres:15
         env:
           POSTGRES_USER: snei3i
           POSTGRES_PASSWORD: snei3i
-          POSTGRES_DB: snei3i
+          POSTGRES_DB: snei3i_test
         ports:
-          - 5432:5432
+          - 5434:5432
         options: >-
           --health-cmd="pg_isready -U snei3i"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js 20.19.3
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20.19.3
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm ci
-    - name: Run Unit Tests
-      run: npm run test
-    - name: Run e2e tests
-      env:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.3
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          sudo apt-get install -y postgresql-client
+          until pg_isready -h localhost -p 5434 -U snei3i; do
+            echo "⏳ Waiting for PostgreSQL..."
+            sleep 2
+          done
+          echo "✅ PostgreSQL is ready!"
+
+      - name: Verify database exists (create if missing)
+        run: |
+          PGPASSWORD=snei3i psql -h localhost -p 5434 -U snei3i -d postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'snei3i_test'" | grep -q 1 || \
+          PGPASSWORD=snei3i psql -h localhost -p 5434 -U snei3i -d postgres -c "CREATE DATABASE snei3i_test;"
+        
+
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Run e2e tests
+        env:
           NODE_ENV: test
-          CI: true 
+          CI: true
           DB_HOST: localhost
-          DB_PORT: 5432
+          DB_PORT: 5434
           DB_USERNAME: snei3i
           DB_PASSWORD: snei3i
-          DB_NAME: snei3i
-      run: npm run test:e2e
+          DB_NAME: snei3i_test
+        run: npm run test:e2e

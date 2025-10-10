@@ -1,5 +1,6 @@
 import { UserAuthorization } from '../domain/errors/user-authorization.error';
 import { UserNotFoundError } from '../domain/errors/user-not-found.error';
+import { UserWorngPassword } from '../domain/errors/user-password.error';
 import { Role, UserModel } from '../domain/User';
 
 interface FreelancerFilter {
@@ -25,6 +26,22 @@ export class UserInMemory {
     return found;
   }
 
+  async getUserByEmail(email: string): Promise<UserModel> {
+    const found = await this.users.find((cat) => cat.email === email);
+    if (!found) {
+      throw new UserNotFoundError();
+    }
+    return found;
+  }
+
+  async clientLogIn(email: string, password: string) {
+    const user = await this.getUserByEmail(email);
+    if ((await user).password !== password) {
+      throw new UserWorngPassword();
+    }
+    return user;
+  }
+
   async isAdmin(userId: string): Promise<boolean> {
     return (await this.getUserById(userId)).role === Role.ADMIN;
   }
@@ -41,7 +58,7 @@ export class UserInMemory {
     throw new UserAuthorization();
   }
 
-  async filterFreelancers (filters: FreelancerFilter): Promise<UserModel[]> {
+  async filterFreelancers(filters: FreelancerFilter): Promise<UserModel[]> {
     return this.users.filter((user) => {
       if (user.role !== Role.FREELANCER) return false;
 
@@ -64,5 +81,4 @@ export class UserInMemory {
       return ratingMatch && categoryMatch && locationMatch;
     });
   }
-  
 }
