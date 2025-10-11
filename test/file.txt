@@ -4,7 +4,6 @@
   "password": "000000"
 }
 
-
 [
   {
     "email": "john.doe@example.com",
@@ -51,8 +50,6 @@
 ]
 
 
-
-
   deploy:
     runs-on: ubuntu-latest
     needs: test 
@@ -71,3 +68,58 @@
 
       - name: Push Docker image
         run: docker push my-dockerhub-user/my-nest-app:latest
+
+
+
+
+        INSERT INTO users (name, email, password, role, services)
+VALUES
+  (
+    'John Doe',
+    'john.doe@example.com',
+    '000000',
+    'FREELANCER',
+    '[
+      {
+        "name": "Toilet Repair",
+        "laborPrice": 80,
+        "estimatedMaterialCost": 25,
+        "notes": "Material cost may vary depending on pipe size"
+      }
+    ]'
+  ),
+  (
+    'Sarah Smith',
+    'sarah.smith@example.com',
+    '000000',
+    'FREELANCER',
+    '[
+      {
+        "name": "Electrical Wiring",
+        "laborPrice": 120,
+        "estimatedMaterialCost": 50,
+        "notes": "Wiring length may increase material cost"
+      }
+    ]'
+  ),
+  (
+    'Ali Ahmed',
+    'ali.ahmed@example.com',
+    '000000',
+    'FREELANCER',
+    '[
+      {
+        "name": "Painting Walls",
+        "laborPrice": 100,
+        "estimatedMaterialCost": 60,
+        "notes": "Material cost may vary by paint quality"
+      }
+    ]'
+  ),
+  (
+    'client',
+    'client@gmail.com',
+    '000000',
+    'CLIENT',
+    NULL
+  );
