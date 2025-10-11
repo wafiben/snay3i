@@ -26,6 +26,16 @@ describe('User should sign In', () => {
     if (dataSource && dataSource.isInitialized) {
       await dataSource.getRepository(UserEntity).clear();
     }
+
+    if (dataSource && dataSource.isInitialized) {
+      // Clear all tables in correct order (respecting foreign keys)
+      const entities = dataSource.entityMetadatas;
+
+      for (const entity of entities) {
+        const repository = await dataSource.getRepository(entity.name);
+        await repository.query(`DELETE FROM ${entity.tableName};`);
+      }
+    }
   });
 
   afterAll(async () => {
@@ -45,16 +55,13 @@ describe('User should sign In', () => {
   it('user should sign in', async () => {
     expect(true).toBe(true);
     // 1️⃣ Save a user/
-    /*     const newUser = {
+    const newUser = {
       name: 'client',
       email: 'client@gmail.com',
       password: '000000',
     };
 
-    // 1️⃣ Create user
-    const createRes = await request(app.getHttpServer())
-      .post('/user-client')
-      .send(newUser);
+    await request(app.getHttpServer()).post('/user-client').send(newUser);
 
     const loginRes = await request(app.getHttpServer())
       .post('/user/login')
@@ -69,6 +76,6 @@ describe('User should sign In', () => {
     expect(profileRes.status).toBe(HttpStatus.OK);
 
     expect(profileRes.body).toHaveProperty('email', 'client@gmail.com');
-    expect(profileRes.body).toHaveProperty('name', 'client'); */
+    expect(profileRes.body).toHaveProperty('name', 'client');
   });
 });
