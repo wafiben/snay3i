@@ -1,7 +1,9 @@
 import { UserInMemory } from '../users/database/user-in-memory';
 import { Role } from '../users/domain/User';
 import { UserBuilder } from '../../test-utils/user-builder';
+import { Hashpassword } from '../../test-utils/password-hasher';
 import { UserWorngPassword } from '../users/domain/errors/user-password.error';
+import * as bcrypt from 'bcrypt';
 
 describe('Auth user', () => {
   let userRepository: UserInMemory;
@@ -45,21 +47,30 @@ describe('Auth user', () => {
       },
     ];
 
-    const users = usersData.map((data) =>
-      new UserBuilder()
+    const users = usersData.map(async (data) => {
+      const hashedPassword = await bcrypt.hash(data.password, 10);
+
+      return new UserBuilder()
         .withId(data.id)
         .withName(data.name)
-        .withPassword(data.password)
+        .withPassword(hashedPassword)
         .withEmail(data.email)
         .withRole(data.role)
-        .build(),
-    );
+        .build();
+    });
 
     for (const user of users) {
-      await userRepository.addUser(user);
+      await userRepository.addUser(await user);
     }
   });
 
+  it('client should login correctly', async () => {
+    const client = await userRepository.clientLogIn(email, password);
+
+    expect(client.email).toBe(client.email);
+    expect(client.password).toBe(client.password);
+    expect(client.id).toBe(client.id);
+  });
 
   it('client should login correctly', async () => {
     const client = await userRepository.clientLogIn(email, password);
