@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - 'feature/**'
+      - 'main'
   pull_request:
     branches:
       - 'feature/**'
-      - 'develop'
+      - 'main'
 
 jobs:
   test:
@@ -41,6 +42,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+
       - name: Wait for PostgreSQL to be ready
         run: |
           sudo apt-get install -y postgresql-client
@@ -71,7 +73,6 @@ jobs:
         run: npm run test:e2e
 
       - name: Build application
-        if: github.event_name == 'pull_request' && github.base_ref == 'develop'
-        run: npm run build    
-        
-        
+
+        if: github.event_name == 'pull_request' && github.base_ref == 'main'
+        run: npm run build
