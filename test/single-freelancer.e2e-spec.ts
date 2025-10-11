@@ -43,7 +43,6 @@ describe('get single with type Freelancer', () => {
   });
 
   it('should save a single user freelancer', async () => {
-    // 1️⃣ Save a user
     const newUser = {
       name: 'Ali',
       email: 'ali@gmail.com',
@@ -51,13 +50,12 @@ describe('get single with type Freelancer', () => {
       services: [],
     };
 
-    // 1️⃣ Create user
     const createRes = await request(app.getHttpServer())
       .post('/user-freelancer')
       .send(newUser);
 
     expect(createRes.status).toBe(HttpStatus.CREATED);
-    id = createRes?.body?.id; // this should be the generated ID
+    id = createRes?.body?.id;
     expect(id).toBeDefined();
 
     // 2️⃣ Fetch the user from database via GET endpoint

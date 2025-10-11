@@ -73,4 +73,4 @@ jobs:
       - name: Build application
 
         if: github.event_name == 'pull_request' && github.base_ref == 'main'
-        run: npm run build    
+        run: npm run build
