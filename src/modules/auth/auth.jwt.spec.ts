@@ -10,7 +10,7 @@ describe('Auth user', () => {
   let email: string;
   let password: string;
 
-  beforeEach(async () => {
+  beforeEach( async () => {
     userRepository = new UserInMemory();
     email = 'client@gmail.com';
     password = '000000';
