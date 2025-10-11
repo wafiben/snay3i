@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - 'feature/**'
+      - 'develop'
 
 jobs:
   test:
@@ -68,3 +69,9 @@ jobs:
           DB_PASSWORD: snei3i
           DB_NAME: snei3i_test
         run: npm run test:e2e
+
+      - name: Build application
+        if: github.event_name == 'pull_request' && github.base_ref == 'develop'
+        run: npm run build    
+        
+        

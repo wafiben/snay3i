@@ -39,14 +39,12 @@ describe('User should sign In', () => {
   });
 
   afterAll(async () => {
-    // Close in the correct order
     if (dataSource && dataSource.isInitialized) {
       await dataSource.destroy();
     }
     if (app) {
       await app.close();
     }
-    // Close the testing module
     if (moduleRef) {
       await moduleRef.close();
     }
