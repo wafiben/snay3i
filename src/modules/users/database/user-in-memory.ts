@@ -2,6 +2,7 @@ import { UserAuthorization } from '../domain/errors/user-authorization.error';
 import { UserNotFoundError } from '../domain/errors/user-not-found.error';
 import { UserWorngPassword } from '../domain/errors/user-password.error';
 import { Role, UserModel } from '../domain/User';
+import * as bcrypt from 'bcrypt';
 
 interface FreelancerFilter {
   keyword?: string;
@@ -36,7 +37,8 @@ export class UserInMemory {
 
   async clientLogIn(email: string, password: string) {
     const user = await this.getUserByEmail(email);
-    if ((await user).password !== password) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!(await isPasswordValid)) {
       throw new UserWorngPassword();
     }
     return user;

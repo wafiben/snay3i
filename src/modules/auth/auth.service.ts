@@ -9,8 +9,6 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  userId: string;
-
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
@@ -29,13 +27,12 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UserWorngPassword();
     }
-
+ 
     return user;
   }
 
   async login(user: any) {
     const payload = { email: user.email, sub: user.id };
-    this.userId = user.id;
 
     return {
       access_token: this.jwtService.sign(payload),
